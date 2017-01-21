@@ -6,8 +6,10 @@ public class Player_SyncPosition : NetworkBehaviour {
 
 	[SyncVar]
 	private Vector3 syncPos;
+    [SyncVar]
+    private Quaternion syncRot;
 
-	[SerializeField] Transform myTransform;
+    [SerializeField] Transform myTransform;
 	[SerializeField] float lerpRate = 15;
 
 	void FixedUpdate() {
@@ -18,6 +20,7 @@ public class Player_SyncPosition : NetworkBehaviour {
 	void LerpPosition() {
 		if (!isLocalPlayer) {
 			myTransform.position = Vector3.Lerp(myTransform.position, syncPos, Time.deltaTime * lerpRate);
+            myTransform.rotation = Quaternion.Lerp(myTransform.rotation, syncRot, Time.deltaTime * lerpRate);
 		}
 	}
 
@@ -26,10 +29,17 @@ public class Player_SyncPosition : NetworkBehaviour {
 		syncPos = pos;
 	}
 
-	[ClientCallback]
+    [Command]
+    void CmdProvideRotationToServer(Quaternion rot)
+    {
+        syncRot = rot;
+    }
+
+    [ClientCallback]
 	void TransmitPosition () {
 		if (isLocalPlayer) {
-			CmdProvidePositionToServer (myTransform.position);
+			CmdProvidePositionToServer(myTransform.position);
+            CmdProvideRotationToServer(myTransform.rotation);
 		}
 	}
 }
