@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
@@ -8,7 +9,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 {
     [RequireComponent(typeof (CharacterController))]
     [RequireComponent(typeof (AudioSource))]
-    public class FirstPersonController : MonoBehaviour
+    public class FirstPersonController : NetworkBehaviour
     {
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
@@ -88,7 +89,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			
 			if (Input.GetMouseButtonDown(0))
 			{
-				Fire();
+				CmdFire();
 			}
 			else if (Input.GetMouseButtonDown(1))
 			{
@@ -96,15 +97,17 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			}
         }
 
-		
-		private void Fire() 
+		[Command]
+		void CmdFire() 
 		{
 			// Create Bullet
 			var bullet = (GameObject) Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
 			//add velocity
 			bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 12;
-			// destroy after 2 seconds TODO: Make object pool for better efficiency?
-			Destroy(bullet, 2.0f);
+			//Spawn bullet on clients
+			NetworkServer.Spawn(bullet);
+			// destroy after 2.8 seconds TODO: Make object pool for better efficiency?
+			Destroy(bullet, 2.8f);
 		}
 		
 		
