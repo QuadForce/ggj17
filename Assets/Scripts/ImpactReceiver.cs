@@ -23,12 +23,21 @@ public class ImpactReceiver : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(character.transform.position, character.radius);
         for(int i=0; i<colliders.Length; i++)
         {
-            ImpactReceiver script = colliders[i].transform.GetComponent<ImpactReceiver>();
-            if (script)
+            if (colliders[i].gameObject.tag == "Bullet")
             {
                 Vector3 dir = colliders[i].transform.position - character.transform.position;
-                float force = Mathf.Clamp(2f / 3, 0, 15);
-                script.AddImpact(dir, force);
+                float force = Mathf.Clamp(200f, 0, 100);
+                AddImpact(dir, force);
+            }
+            else
+            {
+                ImpactReceiver script = colliders[i].transform.GetComponent<ImpactReceiver>();
+                if (script)
+                {
+                    Vector3 dir = colliders[i].transform.position - character.transform.position;
+                    float force = Mathf.Clamp(60f, 0, 20);
+                    script.AddImpact(dir, force);
+                }
             }
         }
     }
