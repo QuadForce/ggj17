@@ -41,6 +41,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
         private AudioSource m_AudioSource;
+		
+		public GameObject bulletPrefab;
+		public Transform bulletSpawn;
 
         // Use this for initialization
         private void Start()
@@ -81,9 +84,30 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
+			
+			
+			if (Input.GetMouseButtonDown(0))
+			{
+				Fire();
+			}
+			else if (Input.GetMouseButtonDown(1))
+			{
+				
+			}
         }
 
-
+		
+		private void Fire() 
+		{
+			// Create Bullet
+			var bullet = (GameObject) Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
+			//add velocity
+			bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 12;
+			// destroy after 2 seconds TODO: Make object pool for better efficiency?
+			Destroy(bullet, 2.0f);
+		}
+		
+		
         private void PlayLandingSound()
         {
             m_AudioSource.clip = m_LandSound;
