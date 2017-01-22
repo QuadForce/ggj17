@@ -63,6 +63,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
 
         // Update is called once per frame
+        double cooldown = 0;
         private void Update()
         {
             RotateView();
@@ -95,6 +96,31 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			{
 				
 			}
+            
+            if (cooldown < Time.time)
+            {
+                if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.W))
+                {
+                    transform.Translate(Vector3.forward * 500 * Time.deltaTime);
+                    cooldown = Time.time + 3;
+                }
+                else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.A))
+                {
+                    transform.Translate(Vector3.left * 500 * Time.deltaTime);
+                    cooldown = Time.time + 3;
+                }
+                else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.D))
+                {
+                    transform.Translate(Vector3.right * 500 * Time.deltaTime);
+                    cooldown = Time.time + 3;
+                }
+                else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.S))
+                {
+                    transform.Translate(Vector3.back * 500 * Time.deltaTime);
+                    cooldown = Time.time + 3;
+                }
+            } 
+           
         }
 
 		[Command]
@@ -239,7 +265,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 #if !MOBILE_INPUT
             // On standalone builds, walk/run speed is modified by a key press.
             // keep track of whether or not the character is walking or running
-            m_IsWalking = !Input.GetKey(KeyCode.LeftShift);
+            //m_IsWalking = !Input.GetKey(KeyCode.LeftShift);
 #endif
             // set the desired speed to be walking or running
             speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
