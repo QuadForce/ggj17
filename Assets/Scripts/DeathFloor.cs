@@ -25,7 +25,8 @@ public class DeathFloor : NetworkBehaviour {
             Deathtracker[fpc.playerID] += 1; 
             if (Deathtracker[fpc.playerID] >= 2)
             {
-                gameObject.GetComponent<FirstPersonController>().enabled = false;
+                fpc.isDisabled = true;
+               // gameObject.GetComponent<FirstPersonController>().enabled = false;
             }
 
             // Death effects 

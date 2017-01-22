@@ -43,11 +43,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
         private AudioSource m_AudioSource;
+
 		private AudioSource m_AudioSourcePew;
 		private AudioSource m_AudioSourceHit;
 		private AudioSource m_AudioSourceDeath;
 		private AudioSource m_AudioSourceJump;
 		private AudioSource m_AudioSourceDash;
+
+
+        public bool isDisabled;
+
 		
 		public GameObject bulletPrefab;
 		public Transform bulletSpawn;
@@ -253,71 +258,74 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         double cooldown = 0;
         private void Update()
-        {    
+        {
             RotateView();
-            // the jump state needs to read here to make sure it is not missed
-            if (!m_Jump)
+            if (!isDisabled)
             {
-                m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
-            }
+                // the jump state needs to read here to make sure it is not missed
+                if (!m_Jump)
+                {
+                    m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
+                }
 
-            if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
-            {
-                StartCoroutine(m_JumpBob.DoBobCycle());
-                PlayLandingSound();
-                m_MoveDir.y = 0f;
-                m_Jumping = false;
-            }
-            if (!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded)
-            {
-                m_MoveDir.y = 0f;
-            }
+                if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
+                {
+                    StartCoroutine(m_JumpBob.DoBobCycle());
+                    PlayLandingSound();
+                    m_MoveDir.y = 0f;
+                    m_Jumping = false;
+                }
+                if (!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded)
+                {
+                    m_MoveDir.y = 0f;
+                }
 
-            m_PreviouslyGrounded = m_CharacterController.isGrounded;
-			
-			
-			if (Input.GetMouseButtonDown(0))
-			{
-				CmdFire();
-			}
-			else if (Input.GetMouseButtonDown(1))
-			{
-				
-			}
+                m_PreviouslyGrounded = m_CharacterController.isGrounded;
 
-            if (Input.GetKey(KeyCode.E))
-            {
-            //    transform.localScale.x += 100;
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    CmdFire();
+                }
+                else if (Input.GetMouseButtonDown(1))
+                {
+
+                }
+
+                if (Input.GetKey(KeyCode.E))
+                {
+                    //    transform.localScale.x += 100;
+                }
+
+                if (cooldown < Time.time)
+                {
+                    if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.W))
+                    {
+                        transform.Translate(Vector3.forward * 500 * Time.deltaTime);
+                        cooldown = Time.time + 3;
+                        PlayCustomAudio("dash");
+                    }
+                    else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.A))
+                    {
+                        transform.Translate(Vector3.left * 500 * Time.deltaTime);
+                        cooldown = Time.time + 3;
+                        PlayCustomAudio("dash");
+                    }
+                    else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.D))
+                    {
+                        transform.Translate(Vector3.right * 500 * Time.deltaTime);
+                        cooldown = Time.time + 3;
+                        PlayCustomAudio("dash");
+                    }
+                    else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.S))
+                    {
+                        transform.Translate(Vector3.back * 500 * Time.deltaTime);
+                        cooldown = Time.time + 3;
+                        PlayCustomAudio("dash");
+                    }
+                }
+
             }
-            
-            if (cooldown < Time.time)
-            {
-                if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.W))
-                {
-                    transform.Translate(Vector3.forward * 500 * Time.deltaTime);
-                    cooldown = Time.time + 3;
-					PlayCustomAudio("dash");
-                }
-                else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.A))
-                {
-                    transform.Translate(Vector3.left * 500 * Time.deltaTime);
-                    cooldown = Time.time + 3;
-					PlayCustomAudio("dash");
-                }
-                else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.D))
-                {
-                    transform.Translate(Vector3.right * 500 * Time.deltaTime);
-                    cooldown = Time.time + 3;
-					PlayCustomAudio("dash");
-                }
-                else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.S))
-                {
-                    transform.Translate(Vector3.back * 500 * Time.deltaTime);
-                    cooldown = Time.time + 3;
-					PlayCustomAudio("dash");
-                }
-            } 
-           
         }
 		
 		
