@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class ImpactReceiver : MonoBehaviour
 {
     float mass = 3.0F; // defines the character mass
     Vector3 impact = Vector3.zero;
     private CharacterController character;
+	private FirstPersonController fpc;
 
     public float BulletForce = 200f;
     public float BulletMax = 100f;
@@ -16,6 +18,7 @@ public class ImpactReceiver : MonoBehaviour
     void Start()
     {
         character = GetComponent<CharacterController>();
+		fpc = GetComponent<FirstPersonController>();
     }
 
     // Update is called once per frame
@@ -33,6 +36,7 @@ public class ImpactReceiver : MonoBehaviour
                 Vector3 dir = colliders[i].transform.position - character.transform.position;
                 float force = Mathf.Clamp(BulletForce, 0, BulletMax);
                 AddImpact(dir, force);
+				fpc.PlayCustomAudio("hit");
             }
             else
             {
