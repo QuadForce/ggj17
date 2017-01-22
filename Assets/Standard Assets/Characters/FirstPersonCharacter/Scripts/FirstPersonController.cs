@@ -319,9 +319,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
 		
         private void PlayLandingSound()
         {
-            m_AudioSource.clip = m_LandSound;
-            m_AudioSource.Play();
-            m_NextStep = m_StepCycle + .5f;
+            if (!m_AudioSource.isPlaying)
+            {
+                m_AudioSource.clip = m_LandSound;
+                m_AudioSource.Play();
+                m_NextStep = m_StepCycle + .5f;
+            }
         }
 
 
