@@ -26,7 +26,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private CurveControlledBob m_HeadBob = new CurveControlledBob();
         [SerializeField] private LerpControlledBob m_JumpBob = new LerpControlledBob();
         [SerializeField] private float m_StepInterval;
-        [SerializeField] private AudioClip[] m_FootstepSounds;    // an array of footstep sounds that will be randomly selected from.
+        //[SerializeField] private AudioClip[] m_FootstepSounds;    // an array of footstep sounds that will be randomly selected from.
         [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
 
@@ -54,6 +54,104 @@ namespace UnityStandardAssets.Characters.FirstPerson
 		[SyncVar]
 		public Color m_color;
 		
+		public AudioClip[] m_PewSounds1;
+		public AudioClip[] m_PewSounds2;
+		public AudioClip[] m_PewSounds3;
+		public AudioClip[] m_PewSounds4;
+		
+		public AudioClip[] m_HitSounds1;
+		public AudioClip[] m_HitSounds2;
+		public AudioClip[] m_HitSounds3;
+		public AudioClip[] m_HitSounds4;
+		
+		public AudioClip[] m_DeathSounds1;
+		public AudioClip[] m_DeathSounds2;
+		public AudioClip[] m_DeathSounds3;
+		public AudioClip[] m_DeathSounds4;
+	
+		public AudioClip[] m_JumpSounds1;
+		public AudioClip[] m_JumpSounds2;
+		public AudioClip[] m_JumpSounds3;
+		public AudioClip[] m_JumpSounds4;
+		
+		public AudioClip[] m_DashSounds1;
+		public AudioClip[] m_DashSounds2;
+		public AudioClip[] m_DashSounds3;
+		public AudioClip[] m_DashSounds4;
+		
+		
+		public void PlayCustomAudio(String sound)
+        {
+			if(!m_AudioSource.isPlaying) {
+				int n;
+				AudioClip[] sounds1 = m_HitSounds1;
+				AudioClip[] sounds2 = m_HitSounds2;
+				AudioClip[] sounds3 = m_HitSounds3;
+				AudioClip[] sounds4 = m_HitSounds4;
+				if(sound == "pew") {
+					sounds1 = m_PewSounds1;
+					sounds2 = m_PewSounds2;
+					sounds3 = m_PewSounds3;
+					sounds4 = m_PewSounds4;
+				} else if (sound == "hit") {
+					sounds1 = m_HitSounds1;
+					sounds2 = m_HitSounds2;
+					sounds3 = m_HitSounds3;
+					sounds4 = m_HitSounds4;
+				} else if (sound == "death") {
+					sounds1 = m_DeathSounds1;
+					sounds2 = m_DeathSounds2;
+					sounds3 = m_DeathSounds3;
+					sounds4 = m_DeathSounds4;
+				} else if (sound == "jump") {
+					sounds1 = m_JumpSounds1;
+					sounds2 = m_JumpSounds2;
+					sounds3 = m_JumpSounds3;
+					sounds4 = m_JumpSounds4;
+				} else if (sound == "dash") {
+					sounds1 = m_DashSounds1;
+					sounds2 = m_DashSounds2;
+					sounds3 = m_DashSounds3;
+					sounds4 = m_DashSounds4;
+				}
+				switch(playerID) 
+				{
+					case 1:
+						n = Random.Range(1, sounds1.Length);
+						m_AudioSource.clip = sounds1[n];
+						m_AudioSource.PlayOneShot(m_AudioSource.clip);
+						// move picked sound to index 0 so it's not picked next time
+						sounds1[n] = sounds1[0];
+						sounds1[0] = m_AudioSource.clip;
+					break;
+					case 2:
+						n = Random.Range(1, sounds2.Length);
+						m_AudioSource.clip = sounds2[n];
+						m_AudioSource.PlayOneShot(m_AudioSource.clip);
+						// move picked sound to index 0 so it's not picked next time
+						sounds2[n] = sounds2[0];
+						sounds2[0] = m_AudioSource.clip;
+					break;
+					case 3:
+						n = Random.Range(1, sounds3.Length);
+						m_AudioSource.clip = sounds3[n];
+						m_AudioSource.PlayOneShot(m_AudioSource.clip);
+						// move picked sound to index 0 so it's not picked next time
+						sounds3[n] = sounds3[0];
+						sounds3[0] = m_AudioSource.clip;
+					break;
+					case 4:
+						n = Random.Range(1, sounds4.Length);
+						m_AudioSource.clip = sounds4[n];
+						m_AudioSource.PlayOneShot(m_AudioSource.clip);
+						// move picked sound to index 0 so it's not picked next time
+						sounds4[n] = sounds4[0];
+						sounds4[0] = m_AudioSource.clip;
+					break;
+				}
+			}
+        }
+		
 
         // Use this for initialization
         private void Start()
@@ -71,7 +169,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			
 			if(isLocalPlayer) 
 			{
-				
 				switch (playerID)
 				{
 					case 1:
@@ -181,21 +278,25 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 {
                     transform.Translate(Vector3.forward * 500 * Time.deltaTime);
                     cooldown = Time.time + 3;
+					PlayCustomAudio("dash");
                 }
                 else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.A))
                 {
                     transform.Translate(Vector3.left * 500 * Time.deltaTime);
                     cooldown = Time.time + 3;
+					PlayCustomAudio("dash");
                 }
                 else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.D))
                 {
                     transform.Translate(Vector3.right * 500 * Time.deltaTime);
                     cooldown = Time.time + 3;
+					PlayCustomAudio("dash");
                 }
                 else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.S))
                 {
                     transform.Translate(Vector3.back * 500 * Time.deltaTime);
                     cooldown = Time.time + 3;
+					PlayCustomAudio("dash");
                 }
             } 
            
@@ -210,6 +311,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			//add velocity
 			bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * handSpeed;
 			NetworkServer.Spawn(bullet);
+			PlayCustomAudio("pew");
 			// destroy after 2.8 seconds TODO: Make object pool for better efficiency?
 			Destroy(bullet, 2.8f);
 		}
@@ -247,7 +349,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 if (m_Jump)
                 {
                     m_MoveDir.y = m_JumpSpeed;
-                    PlayJumpSound();
+                    PlayCustomAudio("jump");
                     m_Jump = false;
                     m_Jumping = true;
                 }
@@ -287,25 +389,25 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             m_NextStep = m_StepCycle + m_StepInterval;
 
-            PlayFootStepAudio();
+            //PlayFootStepAudio();
         }
 
 
-        private void PlayFootStepAudio()
-        {
-            if (!m_CharacterController.isGrounded)
-            {
-                return;
-            }
-            // pick & play a random footstep sound from the array,
-            // excluding sound at index 0
-            int n = Random.Range(1, m_FootstepSounds.Length);
-            m_AudioSource.clip = m_FootstepSounds[n];
-            m_AudioSource.PlayOneShot(m_AudioSource.clip);
-            // move picked sound to index 0 so it's not picked next time
-            m_FootstepSounds[n] = m_FootstepSounds[0];
-            m_FootstepSounds[0] = m_AudioSource.clip;
-        }
+        // private void PlayFootStepAudio()
+        // {
+            // if (!m_CharacterController.isGrounded)
+            // {
+                // return;
+            // }
+            // // pick & play a random footstep sound from the array,
+            // // excluding sound at index 0
+            // int n = Random.Range(1, m_FootstepSounds.Length);
+            // m_AudioSource.clip = m_FootstepSounds[n];
+            // m_AudioSource.PlayOneShot(m_AudioSource.clip);
+            // // move picked sound to index 0 so it's not picked next time
+            // m_FootstepSounds[n] = m_FootstepSounds[0];
+            // m_FootstepSounds[0] = m_AudioSource.clip;
+        // }
 
 
         private void UpdateCameraPosition(float speed)
