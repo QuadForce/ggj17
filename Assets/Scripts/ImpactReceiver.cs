@@ -20,7 +20,7 @@ public class ImpactReceiver : MonoBehaviour
         if (impact.magnitude > 0.2F) character.Move(impact * Time.deltaTime);
         // consumes the impact energy each cycle:
         impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
-        Collider[] colliders = Physics.OverlapSphere(character.transform.position, character.radius);
+        Collider[] colliders = Physics.OverlapSphere(character.transform.position, character.radius * 1.5f);
         for(int i=0; i<colliders.Length; i++)
         {
             if (colliders[i].gameObject.tag == "Bullet")
@@ -40,13 +40,6 @@ public class ImpactReceiver : MonoBehaviour
                 }
             }
         }
-    }
-
-    void onCollisionEnter(Collision collision)
-    {
-            Vector3 dir = collision.transform.position - character.transform.position;
-            float force = Mathf.Clamp(200f, 0, 100);
-            AddImpact(dir, force);
     }
 
     // call this function to add an impact force:
