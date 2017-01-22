@@ -8,11 +8,11 @@ public class DeathFloor : NetworkBehaviour {
 
     public GameObject particles;
     public GameObject deathVision;
-    private float spawnChoice; 
+    public int[] Deathtracker;
 
     void Start()
     {
-
+        Deathtracker = new int[4] { 0, 0, 0, 0 };
     }
 
     void OnTriggerEnter(Collider other)
@@ -20,11 +20,19 @@ public class DeathFloor : NetworkBehaviour {
    
         if (other.gameObject.CompareTag("Death_floor"))
         {
+            // Keep track of player death 
+            FirstPersonController fpc = GetComponent<FirstPersonController>();
+            Deathtracker[fpc.playerID] += 1; 
+            if (Deathtracker[fpc.playerID] >= 2)
+            {
+                gameObject.GetComponent<FirstPersonController>().enabled = false;
+            }
+
+            // Death effects 
             CmdSpawnParticles();
             gameObject.transform.position = new Vector3(11.86f, 60f, 22.0f);
             GameObject pEffect = GameObject.Instantiate(deathVision, new Vector3(11.86f, 55f, 22.0f), gameObject.transform.rotation);
             Destroy(pEffect, 3f);
-			FirstPersonController fpc = GetComponent<FirstPersonController>();
 			fpc.PlayCustomAudio("death");
         }
     }
