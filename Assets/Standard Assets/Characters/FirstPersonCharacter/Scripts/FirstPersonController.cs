@@ -47,6 +47,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 		public Transform bulletSpawn;
 		public float handSpeed = 25.0f;
 
+        [SyncVar]
         public int playerID; //1=blue 2=green 3=yellow 4=red
 
         // Use this for initialization
@@ -155,6 +156,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 }
             } 
            
+        }
+
+        [ClientRpc]
+        void RpcSetColor(Color c)
+        {
+
         }
 
 		[Command]

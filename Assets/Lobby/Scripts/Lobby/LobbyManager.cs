@@ -331,6 +331,7 @@ namespace Prototype.NetworkLobby
 
             Debug.Log(lobbyPlayer);
             Debug.Log(gamePlayer);
+            Debug.Log(_lobbyHooks);
             LobbyPlayer lp = lobbyPlayer.GetComponent<LobbyPlayer>();
             FirstPersonController fpc = gamePlayer.GetComponent<FirstPersonController>();
 
@@ -344,16 +345,19 @@ namespace Prototype.NetworkLobby
             {
                 //green person
                 fpc.playerID = 2;
+                Debug.Log("set green person sound and color");
             }
             else if (lp.playerColor == Color.yellow)
             {
                 //yellow person
                 fpc.playerID = 3;
+                Debug.Log("set yellow person sound and color");
             }
             else if (lp.playerColor == Color.red)
             {
                 //red person
                 fpc.playerID = 4;
+                Debug.Log("set red person sound and color");
             }
 
             if (_lobbyHooks)
