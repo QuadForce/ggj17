@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Wave : MonoBehaviour {
+    public float speed = 4f;
     bool right = true;
     // Use this for initialization
     void Start () {
@@ -18,10 +19,10 @@ public class Wave : MonoBehaviour {
 
         if (right)
         {
-            rotationVector.z += 2;
+            rotationVector.z += speed;
             
             transform.rotation = Quaternion.Euler(rotationVector);
-            if (rotationVector.z > 110)
+            if (rotationVector.z > 125)
             {
                 right = false;
             }
@@ -29,9 +30,9 @@ public class Wave : MonoBehaviour {
 
         if (!right)
         {
-            rotationVector.z -= 2;
+            rotationVector.z -= speed;
             transform.rotation = Quaternion.Euler(rotationVector);
-            if (rotationVector.z < 65)
+            if (rotationVector.z < 50)
             {
                 right = true;
             }
