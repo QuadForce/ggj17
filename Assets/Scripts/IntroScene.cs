@@ -44,7 +44,7 @@ public class IntroScene : MonoBehaviour {
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenuScene");
         }
 
-        if (Time.time > 5)
+        if (Time.time > 2.65)
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenuScene");
         }
