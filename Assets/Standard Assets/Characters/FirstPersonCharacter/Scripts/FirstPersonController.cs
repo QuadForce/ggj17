@@ -74,6 +74,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
 		public AudioClip[] m_JumpSounds3;
 		public AudioClip[] m_JumpSounds4;
 		
+		public AudioClip[] m_DashSounds1;
+		public AudioClip[] m_DashSounds2;
+		public AudioClip[] m_DashSounds3;
+		public AudioClip[] m_DashSounds4;
+		
 		
 		public void PlayCustomAudio(String sound)
         {
@@ -103,6 +108,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
 					sounds2 = m_JumpSounds2;
 					sounds3 = m_JumpSounds3;
 					sounds4 = m_JumpSounds4;
+				} else if (sound == "dash") {
+					sounds1 = m_DashSounds1;
+					sounds2 = m_DashSounds2;
+					sounds3 = m_DashSounds3;
+					sounds4 = m_DashSounds4;
 				}
 				switch(playerID) 
 				{
@@ -268,21 +278,25 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 {
                     transform.Translate(Vector3.forward * 500 * Time.deltaTime);
                     cooldown = Time.time + 3;
+					PlayCustomAudio("dash");
                 }
                 else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.A))
                 {
                     transform.Translate(Vector3.left * 500 * Time.deltaTime);
                     cooldown = Time.time + 3;
+					PlayCustomAudio("dash");
                 }
                 else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.D))
                 {
                     transform.Translate(Vector3.right * 500 * Time.deltaTime);
                     cooldown = Time.time + 3;
+					PlayCustomAudio("dash");
                 }
                 else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && Input.GetKey(KeyCode.S))
                 {
                     transform.Translate(Vector3.back * 500 * Time.deltaTime);
                     cooldown = Time.time + 3;
+					PlayCustomAudio("dash");
                 }
             } 
            

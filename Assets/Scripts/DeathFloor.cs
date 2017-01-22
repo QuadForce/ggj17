@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class DeathFloor : NetworkBehaviour {
 
@@ -23,6 +24,8 @@ public class DeathFloor : NetworkBehaviour {
             gameObject.transform.position = new Vector3(11.86f, 60f, 22.0f);
             GameObject pEffect = GameObject.Instantiate(deathVision, new Vector3(11.86f, 55f, 22.0f), gameObject.transform.rotation);
             Destroy(pEffect, 3f);
+			FirstPersonController fpc = GetComponent<FirstPersonController>();
+			fpc.PlayCustomAudio("death");
         }
     }
 
