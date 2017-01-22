@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityStandardAssets.CrossPlatformInput;
@@ -49,6 +50,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         [SyncVar]
         public int playerID; //1=blue 2=green 3=yellow 4=red
+		
+		[SyncVar]
+		public Color m_color;
+		
 
         // Use this for initialization
         private void Start()
@@ -63,39 +68,77 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
-
-            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            for (int i = 0; i < players.Length; i++)
-            {
-                //Color col = Random.Range(0,4)
-                if (i == 0)
-                {
-                    players[0].GetComponent<MeshRenderer>().material.color = Color.blue;
-                }
-            }
+			
+			if(isLocalPlayer) 
+			{
+				
+				switch (playerID)
+				{
+					case 1:
+						m_color = Color.blue;
+						gameObject.GetComponentInChildren<MeshRenderer>().material.color = m_color;
+						CmdSetPlayerColor(m_color);
+						break;
+					case 2:
+						m_color = Color.green;
+						gameObject.GetComponentInChildren<MeshRenderer>().material.color = m_color;
+						CmdSetPlayerColor(m_color);
+						break;
+					case 3:
+						m_color = Color.yellow;
+						gameObject.GetComponentInChildren<MeshRenderer>().material.color = m_color;
+						CmdSetPlayerColor(m_color);
+						break;
+					case 4:
+						m_color = Color.red;
+						gameObject.GetComponentInChildren<MeshRenderer>().material.color = m_color;
+						CmdSetPlayerColor(m_color);
+						break;
+				}
+			}
         }
+		
+		[Command]
+		public void CmdSetPlayerColor(Color c)
+		{
+			m_color = c; 
+		}
+		
+		[ClientCallback]
+		void TransmitColor(){
+			if(isLocalPlayer)
+			{
+				CmdSetPlayerColor(m_color);
+			}
+		}
+		
+		 public override void OnStartClient ()
+     {
+         StartCoroutine (UpdateColor (1.5f));
+ 
+     }
+ 
+     IEnumerator UpdateColor(float time){
+     
+         float timer = time;
+ 
+         while (timer > 0) {
+             timer -= Time.deltaTime;
+ 
+             TransmitColor();
+             if(!isLocalPlayer)
+                 gameObject.GetComponentInChildren<MeshRenderer>().material.color = m_color;
+ 
+         
+             yield return null;
+         }
+	 }
 
 
         // Update is called once per frame
         double cooldown = 0;
         private void Update()
-        {
-            switch (playerID)
-            {
-                case 1:
-                    gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
-                    break;
-                case 2:
-                    gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.green;
-                    break;
-                case 3:
-                    gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;
-                    break;
-                case 4:
-                    gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
-                    break;
-            }
-                
+        {    
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
@@ -157,13 +200,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             } 
            
         }
-
-        [ClientRpc]
-        void RpcSetColor(Color c)
-        {
-
-        }
-
+		
+		
 		[Command]
 		void CmdFire() 
 		{
@@ -171,7 +209,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			var bullet = (GameObject) Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
 			//add velocity
 			bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * handSpeed;
-			//Spawn bullet on clients
 			NetworkServer.Spawn(bullet);
 			// destroy after 2.8 seconds TODO: Make object pool for better efficiency?
 			Destroy(bullet, 2.8f);
