@@ -45,7 +45,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
 		
 		public GameObject bulletPrefab;
 		public Transform bulletSpawn;
-		public float handSpeed = 20.0f;
+		public float handSpeed = 25.0f;
+
+        public int playerID; //1=blue 2=green 3=yellow 4=red
 
         // Use this for initialization
         private void Start()
@@ -77,6 +79,22 @@ namespace UnityStandardAssets.Characters.FirstPerson
         double cooldown = 0;
         private void Update()
         {
+            switch (playerID)
+            {
+                case 1:
+                    gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
+                    break;
+                case 2:
+                    gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.green;
+                    break;
+                case 3:
+                    gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;
+                    break;
+                case 4:
+                    gameObject.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+                    break;
+            }
+                
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
