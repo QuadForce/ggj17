@@ -15,6 +15,11 @@ namespace Prototype.NetworkLobby
 
         static public LobbyManager s_Singleton;
 
+        public Material materialblue;
+        public Material materialGreen;
+        public Material materialPink;
+        public Material materialYellow;
+
 
         [Header("Unity UI Lobby")]
         [Tooltip("Time in second between all players ready & match start")]
@@ -330,6 +335,7 @@ namespace Prototype.NetworkLobby
             //just subclass "LobbyHook" and add it to the lobby object.
 
             if (_lobbyHooks)
+                //gamePlayer.GetComponent<Renderer>().material = materialblue;
                 _lobbyHooks.OnLobbyServerSceneLoadedForPlayer(this, lobbyPlayer, gamePlayer);
 
             return true;
