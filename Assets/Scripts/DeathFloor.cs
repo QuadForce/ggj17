@@ -33,8 +33,7 @@ public class DeathFloor : MonoBehaviour {
             if (spawnChoice == 4)
             {
                 gameObject.transform.position = new Vector3(56.1f, 10f, -23.6f);
-            };
-            gameObject.transform.rotation = new Quaternion(90, 0, 0, 0);
+            }
         }
     }
 
