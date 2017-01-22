@@ -41,6 +41,14 @@ public class ImpactReceiver : MonoBehaviour
             }
         }
     }
+
+    void onCollisionEnter(Collision collision)
+    {
+            Vector3 dir = collision.transform.position - character.transform.position;
+            float force = Mathf.Clamp(200f, 0, 100);
+            AddImpact(dir, force);
+    }
+
     // call this function to add an impact force:
     public void AddImpact(Vector3 dir, float force)
     {
