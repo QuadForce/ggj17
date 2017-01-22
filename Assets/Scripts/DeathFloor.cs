@@ -9,6 +9,7 @@ public class DeathFloor : NetworkBehaviour {
     public GameObject particles;
     public GameObject deathVision;
     public int[] Deathtracker;
+    private int playerID; 
 
     void Start()
     {
@@ -22,8 +23,9 @@ public class DeathFloor : NetworkBehaviour {
         {
             // Keep track of player death 
             FirstPersonController fpc = GetComponent<FirstPersonController>();
-            Deathtracker[fpc.playerID] += 1; 
-            if (Deathtracker[fpc.playerID] >= 2)
+            playerID = fpc.playerID - 1; 
+            Deathtracker[playerID] += 1; 
+            if (Deathtracker[playerID] >= 2)
             {
                 fpc.isDisabled = true;
                // gameObject.GetComponent<FirstPersonController>().enabled = false;
