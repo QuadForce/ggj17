@@ -45,6 +45,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 		
 		public GameObject bulletPrefab;
 		public Transform bulletSpawn;
+		public float handSpeed = 20.0f;
 
         // Use this for initialization
         private void Start()
@@ -144,7 +145,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			// Create Bullet
 			var bullet = (GameObject) Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
 			//add velocity
-			bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 12;
+			bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * handSpeed;
 			//Spawn bullet on clients
 			NetworkServer.Spawn(bullet);
 			// destroy after 2.8 seconds TODO: Make object pool for better efficiency?
