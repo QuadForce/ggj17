@@ -28,6 +28,5 @@ public class LavaTide : MonoBehaviour {
                 up = true; 
             }
         }
-        Debug.Log(transform.position.y);
     }
 }
