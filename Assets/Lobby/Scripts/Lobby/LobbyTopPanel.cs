@@ -22,6 +22,15 @@ namespace Prototype.NetworkLobby
             if (!isInGame)
                 return;
 
+            if (isDisplayed == true)
+            {
+                if(Input.GetKeyDown(KeyCode.O))
+                {
+                    LobbyManager lm = GetComponentInParent<LobbyManager>();
+                    lm.GoBackButton();
+                }
+            }
+
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 ToggleVisibility(!isDisplayed);
