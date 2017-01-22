@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.Networking.Types;
 using UnityEngine.Networking.Match;
 using System.Collections;
+using UnityStandardAssets.Characters.FirstPerson;
 
 
 namespace Prototype.NetworkLobby
@@ -14,12 +15,6 @@ namespace Prototype.NetworkLobby
         static short MsgKicked = MsgType.Highest + 1;
 
         static public LobbyManager s_Singleton;
-
-        public Material materialblue;
-        public Material materialGreen;
-        public Material materialPink;
-        public Material materialYellow;
-
 
         [Header("Unity UI Lobby")]
         [Tooltip("Time in second between all players ready & match start")]
@@ -333,6 +328,33 @@ namespace Prototype.NetworkLobby
         {
             //This hook allows you to apply state data from the lobby-player to the game-player
             //just subclass "LobbyHook" and add it to the lobby object.
+
+            Debug.Log(lobbyPlayer);
+            Debug.Log(gamePlayer);
+            LobbyPlayer lp = lobbyPlayer.GetComponent<LobbyPlayer>();
+            FirstPersonController fpc = gamePlayer.GetComponent<FirstPersonController>();
+
+            if (lp.playerColor == Color.blue)
+            {
+                //blue person
+                fpc.playerID = 1;
+                Debug.Log("set blue person sound and color");
+            }
+            else if (lp.playerColor == Color.green)
+            {
+                //green person
+                fpc.playerID = 2;
+            }
+            else if (lp.playerColor == Color.yellow)
+            {
+                //yellow person
+                fpc.playerID = 3;
+            }
+            else if (lp.playerColor == Color.red)
+            {
+                //red person
+                fpc.playerID = 4;
+            }
 
             if (_lobbyHooks)
                 //gamePlayer.GetComponent<Renderer>().material = materialblue;

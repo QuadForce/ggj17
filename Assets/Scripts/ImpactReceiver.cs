@@ -7,6 +7,11 @@ public class ImpactReceiver : MonoBehaviour
     float mass = 3.0F; // defines the character mass
     Vector3 impact = Vector3.zero;
     private CharacterController character;
+
+    public float BulletForce = 200f;
+    public float BulletMax = 100f;
+    public float BulletDetectionRadius = 1.5f;
+
     // Use this for initialization
     void Start()
     {
@@ -20,13 +25,13 @@ public class ImpactReceiver : MonoBehaviour
         if (impact.magnitude > 0.2F) character.Move(impact * Time.deltaTime);
         // consumes the impact energy each cycle:
         impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
-        Collider[] colliders = Physics.OverlapSphere(character.transform.position, character.radius * 1.5f);
+        Collider[] colliders = Physics.OverlapSphere(character.transform.position, character.radius * BulletDetectionRadius);
         for(int i=0; i<colliders.Length; i++)
         {
             if (colliders[i].gameObject.tag == "Bullet")
             {
                 Vector3 dir = colliders[i].transform.position - character.transform.position;
-                float force = Mathf.Clamp(200f, 0, 100);
+                float force = Mathf.Clamp(BulletForce, 0, BulletMax);
                 AddImpact(dir, force);
             }
             else
