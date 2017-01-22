@@ -59,6 +59,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
+
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            for (int i = 0; i < players.Length; i++)
+            {
+                //Color col = Random.Range(0,4)
+                if (i == 0)
+                {
+                    players[0].GetComponent<MeshRenderer>().material.color = Color.blue;
+                }
+            }
         }
 
 
@@ -96,6 +106,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			{
 				
 			}
+
+            if (Input.GetKey(KeyCode.E))
+            {
+            //    transform.localScale.x += 100;
+            }
             
             if (cooldown < Time.time)
             {
